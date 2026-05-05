@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schoolly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+  <div class="app-shell">
+    <section class="login-screen" id="loginScreen">
+      <div class="login-hero">
+        <div class="brand-lockup">
+          <img class="brand-logo hero-logo" src="file:///C:/Users/matte/Downloads/graph.png" alt="Schoolly">
+          <div>
+            <p class="eyebrow">Social network per studenti</p>
+            <h1>Schoolly</h1>
+          </div>
+        </div>
+
+        <div class="hero-copy">
+          <p>
+            Feed scolastico, chat, appunti, gruppi tipo classroom e study room vocali/video
+            in un unico posto.
+          </p>
+          <ul class="feature-pills">
+            <li>Hashtag cliccabili</li>
+            <li>DM e profili</li>
+            <li>Appunti con flair</li>
+            <li>Gruppi di classe</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="login-card">
+        <h2>Accedi con email istituzionale</h2>
+        <p class="muted">
+          In questa demo il login Google, le chat realtime e le room sono simulate lato browser.
+        </p>
+
+        <form id="loginForm" class="login-form">
+          <label>
+            Email istituzionale
+            <input type="email" id="emailInput" placeholder="nome.cognome@liceo.edu.it" required>
+          </label>
+
+          <label>
+            Nickname
+            <input type="text" id="nicknameInput" placeholder="@schoolhero" maxlength="24" required>
+          </label>
+
+          <label>
+            Classe
+            <input type="text" id="classInput" placeholder="3A" maxlength="12" required>
+          </label>
+
+          <button type="submit" class="primary-btn google-btn">
+            <span class="google-dot"></span>
+            Continua con Google
+          </button>
+        </form>
+
+        <p class="form-feedback" id="loginFeedback"></p>
+      </div>
+    </section>
+
+    <main class="dashboard hidden" id="dashboard">
+      <aside class="sidebar">
+        <div class="brand-panel">
+          <div class="brand-lockup compact">
+            <img class="brand-logo sidebar-logo" src="file:///C:/Users/matte/Downloads/graph.png" alt="Schoolly">
+            <div class="brand-caption">
+              <p class="eyebrow">Schoolly</p>
+              <strong>Campus Network</strong>
+            </div>
+          </div>
+
+          <button id="themeToggle" class="icon-toggle" type="button" aria-label="Attiva modalità scura">
+            <span>Theme</span>
+          </button>
+        </div>
+
+        <section class="sidebar-card search-card">
+          <div class="card-head">
+            <h3>Ricerca</h3>
+          </div>
+          <div class="search-bar">
+            <input id="searchInput" type="text" placeholder="Cerca scuole o utenti">
+            <button id="searchClear" class="icon-toggle" type="button">Reset</button>
+          </div>
+          <div id="searchResults" class="search-results"></div>
+        </section>
+
+        <nav class="nav-list" id="mainNav">
+          <button class="nav-item active" data-view="feed">Feed</button>
+          <button class="nav-item" data-view="profile">Profilo</button>
+          <button class="nav-item" data-view="friends">Amici</button>
+          <button class="nav-item" data-view="school">Scuola</button>
+          <button class="nav-item" data-view="study">Study Rooms</button>
+        </nav>
+
+        <section class="sidebar-card user-summary">
+          <div class="avatar-wrap">
+            <img id="sidebarAvatar" alt="Avatar profilo">
+          </div>
+          <div>
+            <strong id="sidebarName"></strong>
+            <p id="sidebarMeta" class="muted small"></p>
+          </div>
+        </section>
+
+        <button id="logoutButton" class="text-btn logout-btn" type="button">Logout</button>
+
+        <section class="sidebar-card tags-card">
+          <div class="card-head">
+            <h3>Hashtag in trend</h3>
+          </div>
+          <div id="tagCloud" class="tag-cloud"></div>
+        </section>
+      </aside>
+
+      <section class="main-content">
+        <div class="view active" id="view-feed">
+          <header class="section-header">
+            <div>
+              <p class="eyebrow">Bacheca principale</p>
+              <h2 id="feedTitle">Feed delle scuole</h2>
+            </div>
+            <div class="filter-row" id="feedFilters"></div>
+          </header>
+
+          <section class="composer card composer-readonly">
+            <div class="composer-top">
+              <img id="composerAvatar" alt="Avatar utente">
+              <textarea id="postText" rows="4" placeholder="Per pubblicare entra nella pagina della tua scuola."
+                disabled></textarea>
+            </div>
+
+            <div class="composer-toolbar">
+              <label class="upload-chip">
+                <input type="file" id="mediaInput" accept="image/*,video/*" hidden disabled>
+                Media
+              </label>
+              <input type="text" id="hashtagInput" placeholder="#maturita #matematica" disabled>
+              <button id="publishPost" class="primary-btn" type="button">Vai alla tua scuola</button>
+            </div>
+          </section>
+
+          <section class="feed-layout">
+            <div class="feed-column">
+              <div id="feedList" class="feed-list"></div>
+            </div>
+
+            <aside class="feed-side">
+              <section class="card">
+                <div class="card-head">
+                  <h3>Chat lampo</h3>
+                  <button class="text-btn" type="button" data-view-jump="friends">Apri chat</button>
+                </div>
+                <div id="miniChatMessages" class="mini-chat-messages"></div>
+                <div class="mini-chat-form">
+                  <input id="miniChatInput" type="text" placeholder="Scrivi a tutti...">
+                  <button id="miniChatSend" class="icon-send" type="button">Invia</button>
+                </div>
+              </section>
+
+              <section class="card">
+                <div class="card-head">
+                  <h3>Scuole attive</h3>
+                </div>
+                <div id="schoolPreviewList" class="stack-list"></div>
+              </section>
+            </aside>
+          </section>
+        </div>
+
+        <div class="view" id="view-profile">
+          <header class="section-header">
+            <div>
+              <p class="eyebrow">Profilo personale</p>
+              <h2>La tua identità su Schoolly</h2>
+            </div>
+          </header>
+
+          <section class="profile-grid">
+            <article class="card profile-card">
+              <div class="profile-hero">
+                <img id="profileAvatar" alt="Avatar grande">
+                <div>
+                  <div class="profile-title-row">
+                    <h3 id="profileName"></h3>
+                    <span id="roleBadge" class="role-badge"></span>
+                  </div>
+                  <p id="profileHandle" class="muted"></p>
+                  <p id="profileSchool" class="profile-school"></p>
+                </div>
+              </div>
+
+              <form id="profileForm" class="profile-form">
+                <label>
+                  Nome e cognome
+                  <input type="text" id="fullNameInput">
+                </label>
+                <label>
+                  Nickname
+                  <input type="text" id="profileNicknameInput" maxlength="24">
+                </label>
+                <label>
+                  Bio
+                  <textarea id="bioInput" rows="3" maxlength="160"></textarea>
+                </label>
+                <label>
+                  Classe
+                  <input type="text" id="profileClassInput" maxlength="12">
+                </label>
+                <label>
+                  Avatar
+                  <input type="file" id="avatarInput" accept="image/*">
+                </label>
+                <button type="submit" class="primary-btn">Salva profilo</button>
+              </form>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <h3>Appunti caricati</h3>
+              </div>
+              <div id="profileNotes" class="notes-list"></div>
+            </article>
+          </section>
+        </div>
+
+        <div class="view" id="view-friends">
+          <header class="section-header">
+            <div>
+              <p class="eyebrow">Amici e messaggi</p>
+              <h2>Scrivi e organizza lo studio</h2>
+            </div>
+          </header>
+
+          <section class="friends-layout">
+            <article class="card">
+              <div class="card-head">
+                <h3>La tua rete</h3>
+              </div>
+              <div id="friendsList" class="friends-list"></div>
+            </article>
+
+            <article class="card chat-panel">
+              <div class="card-head">
+                <h3>Chat privata</h3>
+                <span id="activeChatName" class="muted">Seleziona un amico</span>
+              </div>
+              <div id="directMessages" class="direct-messages"></div>
+              <div class="chat-input-row">
+                <input id="directMessageInput" type="text" placeholder="Scrivi un messaggio">
+                <button id="sendDirectMessage" class="primary-btn" type="button">Invia</button>
+              </div>
+            </article>
+          </section>
+        </div>
+
+        <div class="view" id="view-school">
+          <header class="section-header">
+            <div>
+              <p class="eyebrow">Scuola e appunti</p>
+              <h2>Pagine ufficiali degli istituti</h2>
+            </div>
+            <button id="createSchoolPage" class="primary-btn" type="button">Crea pagina scuola</button>
+          </header>
+
+          <section class="school-layout">
+            <article class="card school-directory">
+              <div class="card-head">
+                <h3>Istituti presenti</h3>
+              </div>
+              <div id="schoolList" class="stack-list"></div>
+            </article>
+
+            <article class="card school-detail">
+              <div id="schoolDetail"></div>
+            </article>
+          </section>
+
+          <section class="school-utilities">
+            <article class="card school-wall-card">
+              <div class="card-head">
+                <div>
+                  <h3>Bacheca della scuola</h3>
+                  <p class="muted small" id="schoolPostingRule"></p>
+                </div>
+              </div>
+
+              <section class="composer card school-composer" id="schoolComposerCard">
+                <div class="composer-top">
+                  <img id="schoolComposerAvatar" alt="Avatar utente">
+                  <textarea id="schoolPostText" rows="4" placeholder="Scrivi nella bacheca della tua scuola..."></textarea>
+                </div>
+
+                <div class="composer-toolbar">
+                  <label class="upload-chip">
+                    <input type="file" id="schoolMediaInput" accept="image/*,video/*" hidden>
+                    Media
+                  </label>
+                  <input type="text" id="schoolHashtagInput" placeholder="#compiti #assemblea #4A">
+                  <button id="publishSchoolPost" class="primary-btn" type="button">Pubblica nella scuola</button>
+                </div>
+              </section>
+
+              <p class="form-feedback" id="schoolPostFeedback"></p>
+              <div id="schoolWallPosts" class="feed-list"></div>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <h3>Carica appunti</h3>
+                <span class="muted small">Flair per classe e materia</span>
+              </div>
+              <form id="noteUploadForm" class="profile-form">
+                <label>
+                  Titolo appunto
+                  <input type="text" id="noteTitleInput" placeholder="Equazioni di secondo grado">
+                </label>
+                <div class="split-grid">
+                  <label>
+                    Classe
+                    <input type="text" id="noteClassInput" placeholder="3A">
+                  </label>
+                  <label>
+                    Materia
+                    <input type="text" id="noteSubjectInput" placeholder="Matematica">
+                  </label>
+                </div>
+                <label>
+                  Indirizzo
+                  <input type="text" id="noteTrackInput" placeholder="Scientifico">
+                </label>
+                <label>
+                  File appunto
+                  <input type="file" id="noteFileInput" accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png">
+                </label>
+                <button type="submit" class="primary-btn">Carica appunto</button>
+              </form>
+              <p class="form-feedback" id="noteUploadFeedback"></p>
+            </article>
+          </section>
+
+          <section class="school-utilities">
+            <article class="card">
+              <div class="card-head">
+                <div>
+                  <h3>Gruppi classroom</h3>
+                  <p class="muted small">Studenti e insegnanti organizzati per materia</p>
+                </div>
+              </div>
+              <form id="groupForm" class="profile-form">
+                <label>
+                  Nome gruppo
+                  <input type="text" id="groupNameInput" placeholder="4A Matematica">
+                </label>
+                <div class="split-grid">
+                  <label>
+                    Materia
+                    <input type="text" id="groupSubjectInput" placeholder="Matematica">
+                  </label>
+                  <label>
+                    Classe
+                    <input type="text" id="groupClassInput" placeholder="4A">
+                  </label>
+                </div>
+                <button type="submit" class="primary-btn">Crea gruppo</button>
+              </form>
+              <p class="form-feedback" id="groupFeedback"></p>
+              <div id="groupList" class="group-list"></div>
+            </article>
+          </section>
+        </div>
+
+        <div class="view" id="view-study">
+          <header class="section-header">
+            <div>
+              <p class="eyebrow">Chat vocale e video</p>
+              <h2>Study Rooms</h2>
+            </div>
+          </header>
+
+          <section class="study-grid">
+            <article class="card">
+              <div class="card-head">
+                <h3>Stanze attive</h3>
+              </div>
+              <div id="studyRoomList" class="study-room-list"></div>
+            </article>
+
+            <article class="card call-stage">
+              <div class="card-head">
+                <div>
+                  <h3 id="activeRoomTitle">Nessuna stanza attiva</h3>
+                  <p class="muted small" id="roomStatus">Apri una room per attivare microfono e videocamera.</p>
+                </div>
+              </div>
+              <div class="call-display">
+                <video id="mainVideo" class="video-tile main" autoplay muted playsinline></video>
+                <div class="video-strip">
+                  <div id="audioStatusTile" class="video-tile small">Mic off</div>
+                  <div id="cameraStatusTile" class="video-tile small">Cam off</div>
+                </div>
+              </div>
+              <div class="call-controls">
+                <button id="toggleMicBtn" class="icon-toggle" type="button">Mic</button>
+                <button id="toggleCamBtn" class="icon-toggle" type="button">Cam</button>
+                <button id="leaveRoomBtn" class="danger-btn" type="button">Esci</button>
+              </div>
+            </article>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="profileModal" class="overlay hidden">
+    <div class="modal-card">
+      <div class="card-head">
+        <h3>Profilo utente</h3>
+        <button id="closeProfileModal" class="icon-toggle" type="button">Chiudi</button>
+      </div>
+      <div id="profileModalBody"></div>
+      <div class="modal-actions">
+        <button id="startDmFromModal" class="primary-btn" type="button">Apri DM</button>
+      </div>
+    </div>
+  </div>
+
+  <template id="postTemplate">
+    <article class="post-card card">
+      <div class="post-head">
+        <div class="post-user">
+          <button class="user-link avatar-link" type="button">
+            <img class="post-avatar" alt="Avatar autore">
+          </button>
+          <div>
+            <div class="post-title">
+              <button class="user-link name-link" type="button">
+                <strong class="post-name"></strong>
+              </button>
+              <span class="role-badge tiny"></span>
+            </div>
+            <p class="post-meta muted small"></p>
+          </div>
+        </div>
+        <button class="text-btn like-btn" type="button"></button>
+      </div>
+      <p class="post-body"></p>
+      <div class="media-frame hidden"></div>
+      <div class="post-tags"></div>
+    </article>
+  </template>
+
+  <script src="./app.js"></script>
+</body>
+
+</html>
